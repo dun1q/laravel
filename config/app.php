@@ -40,6 +40,7 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
+    'error_reporting' => E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED,
 
     /*
     |--------------------------------------------------------------------------
