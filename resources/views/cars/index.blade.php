@@ -31,6 +31,9 @@
                     <h5 class="card-title">{{ $car->title }}</h5>
                     <p class="card-text text-muted small">
                         {{ $car->year }} г. | {{ number_format($car->mileage_km, 0, '', ' ') }} км
+                        @if($car->published_at)
+                            <small class="text-muted">Опубл.: {{ $car->published_at->format('d.m.Y H:i') }}</small>
+                        @endif
                     </p>
                     <p class="card-text">{{ Str::limit($car->description, 100) }}</p>
                     <div class="mt-auto">

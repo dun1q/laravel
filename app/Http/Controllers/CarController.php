@@ -30,8 +30,14 @@ class CarController extends Controller
             'price' => 'required|numeric|min:0',
             'mileage_km' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'published_at' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
-
+        
+        if ($validated['published_at'] ?? null) {
+            $validated['published_at'] = \Carbon\Carbon::createFromFormat(
+                'Y-m-d\TH:i', $validated['published_at']
+            );
+        }
         // Обработка изображения
         $image = $request->file('image');
         $filename = 'car_' . time() . '.' . $image->getClientOriginalExtension();
@@ -55,6 +61,7 @@ class CarController extends Controller
             'price' => $validated['price'],
             'mileage_km' => $validated['mileage_km'],
             'image_path' => 'cars/' . $filename,
+            'published_at' => $validated['published_at'] ?? null,
         ]);
 
         return redirect()->route('cars.index')->with('success', 'Автообъявление добавлено');
@@ -79,8 +86,14 @@ class CarController extends Controller
             'price' => 'required|numeric|min:0',
             'mileage_km' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'published_at' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
+        if ($validated['published_at'] ?? null) {
+            $validated['published_at'] = \Carbon\Carbon::createFromFormat(
+                'Y-m-d\TH:i', $validated['published_at']
+            );
+        }
         // Если загружено новое изображение
         if ($request->hasFile('image')) {
             // Удаляем старое изображение

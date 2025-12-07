@@ -35,6 +35,12 @@
                 <td><strong>Описание:</strong></td>
                 <td>{!! nl2br(e($car->description)) !!}</td>
             </tr>
+            <tr>
+                <td><strong>Опубликовано:</strong></td>
+                <td>
+                    {{ $car->published_at?->format('d.m.Y H:i:s') ?? 'Сейчас' }}
+                </td>
+            </tr>
         </table>
         <a href="{{ route('cars.index') }}" class="btn btn-secondary">← Назад</a>
     </div>

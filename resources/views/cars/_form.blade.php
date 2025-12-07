@@ -16,6 +16,31 @@
     @enderror
 </div>
 
+<div class="col-12">
+    <div class="mb-3">
+        <label for="published_at" class="form-label">Дата публикации</label>
+        @php
+            $publishedValue = old('published_at');
+            if (isset($car) && $car->published_at) {
+                $publishedValue = $car->published_at->format('Y-m-d\TH:i');
+            }
+        @endphp
+        <input 
+            type="datetime-local"
+            class="form-control @error('published_at') is-invalid @enderror"
+            id="published_at"
+            name="published_at"
+            value="{{ $publishedValue }}"
+        >
+        @error('published_at')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+        <small class="form-text text-muted">
+            Оставьте пустым — объявление будет опубликовано сразу
+        </small>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-4">
         <div class="mb-3">
