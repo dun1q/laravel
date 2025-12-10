@@ -8,3 +8,26 @@
 
 // Твои кастомные стили — создай позже, например:
 // @import "custom";
+
+// Стили для футера — кнопки Tg и Git
+.footer-fixed {
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+
+        &:hover {
+            background-color: #dc3545; // красный
+            border-color: #dc3545;
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
+
+// Кнопка "Подробнее" — красная, с hover
+.btn-danger {
+    &:hover {
+        background-color: #c82333; // чуть темнее
+        border-color: #bd2130;
+    }
+}

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Автообъявления')
+@section('title', 'Объявления')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Автообъявления</h1>
-    <a href="{{ route('cars.create') }}" class="btn btn-success">➕ Добавить</a>
+    <h1 class="text-danger">Объявления</h1>
+    <!-- Кнопка "Добавить" удалена — теперь есть "Загрузить" в шапке -->
 </div>
 
 @if (session('success'))
@@ -32,7 +32,7 @@
                     <p class="card-text text-muted small">
                         {{ $car->year }} г. | {{ number_format($car->mileage_km, 0, '', ' ') }} км
                         @if($car->published_at)
-                            <small class="text-muted">Опубл.: {{ $car->published_at->format('d.m.Y H:i') }}</small>
+                            <br><small>Опубл.: {{ $car->published_at->format('d.m.Y H:i') }}</small>
                         @endif
                     </p>
                     <p class="card-text">{{ Str::limit($car->description, 100) }}</p>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="card-footer bg-white">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('cars.show', $car) }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                        <a href="{{ route('cars.show', $car) }}" class="btn btn-danger btn-sm">Подробнее</a>
                         <div>
                             <a href="{{ route('cars.edit', $car) }}" class="btn btn-outline-warning btn-sm">✏️</a>
                             <form action="{{ route('cars.destroy', $car) }}" method="POST" class="d-inline">
@@ -58,7 +58,7 @@
         </div>
     @empty
         <div class="col-12">
-            <div class="alert alert-info">Нет автообъявлений</div>
+            <div class="alert alert-info">Нет объявлений</div>
         </div>
     @endforelse
 </div>
