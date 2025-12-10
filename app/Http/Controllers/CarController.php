@@ -38,20 +38,17 @@ class CarController extends Controller
                 'Y-m-d\TH:i', $validated['published_at']
             );
         }
-        // Обработка изображения
+        
         $image = $request->file('image');
         $filename = 'car_' . time() . '.' . $image->getClientOriginalExtension();
 
-        // Создаём менеджер
         $manager = new ImageManager(new Driver());
 
-        // Обрабатываем изображение
         $img = $manager->read($image)->resize(600, 400, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
 
-        // Сохраняем
         Storage::disk('public')->put('cars/' . $filename, $img->toPng());
 
         $car = Car::create([
@@ -94,9 +91,7 @@ class CarController extends Controller
                 'Y-m-d\TH:i', $validated['published_at']
             );
         }
-        // Если загружено новое изображение
         if ($request->hasFile('image')) {
-            // Удаляем старое изображение
             if ($car->image_path) {
                 Storage::disk('public')->delete($car->image_path);
             }
@@ -104,16 +99,13 @@ class CarController extends Controller
             $image = $request->file('image');
             $filename = 'car_' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Создаём менеджер
             $manager = new ImageManager(new Driver());
 
-            // Обрабатываем изображение
             $img = $manager->read($image)->resize(600, 400, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
 
-            // Сохраняем
             Storage::disk('public')->put('cars/' . $filename, $img->toPng());
 
             $validated['image_path'] = 'cars/' . $filename;
@@ -126,7 +118,7 @@ class CarController extends Controller
 
     public function destroy(Car $car)
     {
-        $car->delete(); // Soft Delete
+        $car->delete();
         return redirect()->route('cars.index')->with('success', 'Автообъявление удалено');
     }
 }

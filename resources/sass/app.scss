@@ -1,22 +1,17 @@
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
 
-// Font Awesome (если нужен)
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 
-// Твои кастомные стили — создай позже, например:
-// @import "custom";
-
-// Стили для футера — кнопки Tg и Git
 .footer-fixed {
     .btn-outline-secondary {
         border-color: #6c757d;
         color: #6c757d;
 
         &:hover {
-            background-color: #dc3545; // красный
+            background-color: #dc3545;
             border-color: #dc3545;
             color: white;
             text-decoration: none;
@@ -24,10 +19,9 @@
     }
 }
 
-// Кнопка "Подробнее" — красная, с hover
 .btn-danger {
     &:hover {
-        background-color: #c82333; // чуть темнее
+        background-color: #c82333;
         border-color: #bd2130;
     }
 }
