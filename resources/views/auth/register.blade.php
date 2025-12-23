@@ -53,6 +53,14 @@
                                    id="password_confirmation" name="password_confirmation" required>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Роль</label>
+                            <select name="is_admin">
+                                <option value="0">Обычный пользователь</option>
+                                <option value="1">Администратор</option>
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-danger w-100">Зарегистрироваться</button>
 
                     </form>

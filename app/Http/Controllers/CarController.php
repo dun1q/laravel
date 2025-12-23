@@ -3,21 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CarController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
-        $cars = Car::latest()->get();
+        // Показываем активные объявления по умолчанию
+        $query = Car::with('user')->whereNull('deleted_at');
+
+        // Если админ хочет видеть удалённые — включаем их
+        if (request('trashed') && auth()->check() && auth()->user()->is_admin) {
+            $query = Car::with('user')->onlyTrashed();
+        }
+
+        $cars = $query->latest()->get();
+
         return view('cars.index', compact('cars'));
     }
 
     public function create()
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Требуется авторизация');
+        }
         return view('cars.create');
     }
 
@@ -59,6 +75,7 @@ class CarController extends Controller
             'mileage_km' => $validated['mileage_km'],
             'image_path' => 'cars/' . $filename,
             'published_at' => $validated['published_at'] ?? null,
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('cars.index')->with('success', 'Автообъявление добавлено');
@@ -71,11 +88,16 @@ class CarController extends Controller
 
     public function edit(Car $car)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Требуется авторизация');
+        }
         return view('cars.edit', compact('car'));
     }
 
     public function update(Request $request, Car $car)
     {
+        $this->authorize('update-car', $car);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -118,7 +140,24 @@ class CarController extends Controller
 
     public function destroy(Car $car)
     {
+        $this->authorize('delete-car', $car);
         $car->delete();
         return redirect()->route('cars.index')->with('success', 'Автообъявление удалено');
+    }
+
+    public function restore($id)
+    {
+        $this->authorize('restore-car');
+        $car = Car::withTrashed()->findOrFail($id);
+        $car->restore();
+        return redirect()->back()->with('success', 'Объявление восстановлено');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->authorize('force-delete-car');
+        $car = Car::withTrashed()->findOrFail($id);
+        $car->forceDelete();
+        return redirect()->back()->with('success', 'Объявление удалено навсегда');
     }
 }

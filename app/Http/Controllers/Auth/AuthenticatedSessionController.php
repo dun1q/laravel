@@ -28,20 +28,22 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('cars.index'));
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): \Illuminate\Http\RedirectResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Редирект туда, откуда пришёл — или на главную
+        $redirect = $request->input('redirect_to', route('cars.index'));
+
+        return redirect($redirect)->with('success', 'Вы вышли из аккаунта');
     }
 }
