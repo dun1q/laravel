@@ -49,43 +49,58 @@
                         <strong class="text-danger">{{ number_format($car->price, 0, '', ' ') }} ₽</strong>
                     </div>
                 </div>
+
+                <!--ФУТЕР НАЧАЛО-->
                 <div class="card-footer bg-white">
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('cars.show', $car) }}" class="btn btn-danger btn-sm">Подробнее</a>
-                        <small class="text-muted d-block mt-1">
-                            Опубликовал: {{ $car->user->name ?? 'Аноним' }}
-                        </small>
-                        <div class="d-flex gap-2">
-                            {{-- Редактировать — только владельцу --}}
-                            @can('update-car', $car)
-                                <a href="{{ route('cars.edit', $car) }}" class="btn btn-sm btn-outline-primary">✏️</a>
-                            @endcan
+    <div class="d-flex justify-content-between align-items-center" style="min-width:0;">
+        <div class="d-flex align-items-center flex-grow-1 min-width-0" style="min-width:0;">
+            <a href="{{ route('cars.show', $car) }}" class="btn btn-danger btn-sm me-2 flex-shrink-0">Подробнее</a>
+            <small class="text-muted text-truncate d-block"
+                   style="max-width:140px;"
+                   title="Опубликовал: {{ $car->user->name ?? 'Аноним' }}">
+                Опубликовал: {{ $car->user->name ?? 'Аноним' }}
+            </small>
+        </div>
+        <div class="d-flex gap-2 flex-shrink-0">
+            @if(!$car->trashed())
+                @can('update-car', $car)
+                    <a href="{{ route('cars.edit', $car) }}" class="btn btn-sm btn-outline-primary" title="Редактировать">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                @endcan
 
-                            {{-- Удалить — только владельцу --}}
-                            @can('delete-car', $car)
-                                <form action="{{ route('cars.destroy', $car) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить объявление?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
-                                </form>
-                            @endcan
+                @can('delete-car', $car)
+                    <form action="{{ route('cars.destroy', $car) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить объявление?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Удалить">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                @endcan
+            @endif
 
-                            {{-- Восстановить / Удалить навсегда — только админу и только для удалённых --}}
-                            @if(auth()->user()?->is_admin && $car->trashed())
-                                <form action="{{ route('cars.restore', $car) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-success">↺</button>
-                                </form>
-
-                                <form action="{{ route('cars.forceDelete', $car) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить навсегда? Это нельзя отменить.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-dark">❌</button>
-                                </form>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+            @if(auth()->user()?->is_admin && $car->trashed())
+                <form action="{{ route('cars.restore', $car) }}" method="POST" class="d-inline" title="Восстановить">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </form>
+                <form action="{{ route('cars.forceDelete', $car) }}" method="POST" class="d-inline"
+                      onsubmit="return confirm('Удалить навсегда? Это нельзя отменить.')" title="Удалить навсегда">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-dark">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </form>
+            @endif
+        </div>
+    </div>
+</div>
+                <!--ФУТЕР КОНЕЦ-->
+                
             </div>
         </div>
     @empty

@@ -10,6 +10,10 @@
 
 <!-- 🚩 ШАПКА -->
 <header class="bg-white border-bottom py-3">
+
+    <!-- Иконки на карточках -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <div class="container d-flex justify-content-between align-items-center">
         <!-- Логотип -->
         <div class="d-flex align-items-center">
