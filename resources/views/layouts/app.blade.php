@@ -23,22 +23,22 @@
 
         <!-- Правая часть: кнопки -->
         <div class="d-flex gap-2">
-
-            @guest
-                <!-- Незалогинен: Войти / Регистрация -->
-                <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">Войти</a>
-                <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Регистрация</a>
-                <!-- Кнопка "Загрузить" — неактивна для незалогиненных -->
-                <a href="#" class="btn btn-danger px-4 disabled" title="Только для авторизованных">Загрузить</a>
-            @else
-                <!-- Залогинен: Загрузить / Выход -->
-                <a href="{{ route('cars.create') }}" class="btn btn-danger px-4">Загрузить</a>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm">Выход</button>
-                </form>
-            @endguest
+        @guest
+            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-sm">Главная</a>
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">Войти</a>
+            <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Регистрация</a>
+            <a href="#" class="btn btn-danger px-4 disabled" title="Только для авторизованных">Загрузить</a>
+        @else
+            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-sm">Главная</a>
+            <a href="{{ route('cars.create') }}" class="btn btn-danger px-4">Загрузить</a>
+            <a href="{{ route('users.index') }}" class="btn btn-outline-primary btn-sm">Пользователи</a>
+            <a href="{{ route('users.feed') }}" class="btn btn-outline-primary btn-sm">Лента друзей</a>
+            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                @csrf
+                <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Выход</button>
+            </form>
+        @endguest
         </div>
     </div>
 </header>

@@ -45,9 +45,52 @@
                 </td>
             </tr>
         </table>
-        <a href="{{ route('cars.index') }}" class="btn btn-secondary">← Назад</a>
-    </div>
+        <a href="{{ route('cars.index') }}" class="btn btn-secondary mb-4">← Назад</a>
 
+        {{-- Блок комментариев --}}
+        <div class="card mt-4 mb-3">
+            <div class="card-header">
+                <strong>Комментарии</strong>
+            </div>
+            <div class="card-body p-3" style="max-height:300px; overflow-y:auto;">
+                @forelse($car->comments as $comment)
+                @php
+                    $isFriend = auth()->check() && auth()->user()->friends && auth()->user()->friends->contains($comment->user);
+                @endphp
+                <div class="mb-2 border-bottom pb-2 p-2 rounded"
+                    @if($isFriend) style="background:#e7ffe7;" @endif>
+                    <span class="fw-semibold">
+                        {{ $comment->user->name ?? 'Гость' }}
+                        @if($isFriend)
+                            <span class="badge bg-success ms-2">Друг</span>
+                        @endif
+                    </span>
+                    <span class="text-muted small">({{ $comment->created_at->format('d.m.Y H:i') }})</span>
+                    <div>{{ $comment->text }}</div>
+                    @can('delete-comment', $comment)
+                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline-block mt-1">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-link p-0 m-0 text-danger" onclick="return confirm('Удалить комментарий?')">Удалить</button>
+                        </form>
+                    @endcan
+                </div>
+            @empty
+                <div class="text-secondary">Комментариев пока нет.</div>
+            @endforelse
+            </div>
+            @auth
+                <div class="card-footer">
+                    <form action="{{ route('comments.store', $car) }}" method="POST">
+                        @csrf
+                        <textarea name="text" rows="2" class="form-control mb-2" required placeholder="Ваш комментарий"></textarea>
+                        <button type="submit" class="btn btn-primary btn-sm">Добавить комментарий</button>
+                    </form>
+                </div>
+            @endauth
+        </div>
+        {{-- Конец блока комментариев --}}
+    </div>
 
     <div class="mt-4">
         @if(!$car->trashed())

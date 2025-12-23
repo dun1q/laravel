@@ -52,4 +52,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Друзья которых я добавил
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends_users', 'user_id', 'friend_id')->withTimestamps();
+    }
+
+    // Друзья которые добавили меня
+    public function friendOf()
+    {
+        return $this->belongsToMany(User::class, 'friends_users', 'friend_id', 'user_id')->withTimestamps();
+    }
 }

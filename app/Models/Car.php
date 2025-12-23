@@ -40,4 +40,9 @@ class Car extends Model
             get: fn ($value) => $value ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value) : null,
         );
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

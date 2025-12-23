@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect()->route('cars.index');
@@ -43,3 +45,18 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 // Объявления (CRUD)
 Route::resource('cars', CarController::class)->except(['create', 'store', 'edit', 'update', 'destroy']);
 Route::resource('cars', CarController::class)->only(['create', 'store', 'edit', 'update', 'destroy'])->middleware('auth');
+
+// Комментарии
+Route::post('/cars/{car}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+// Руты для дружбы
+Route::post('/users/{user}/add-friend', [UserController::class, 'addFriend'])->name('users.addFriend');
+Route::post('/users/{user}/remove-friend', [UserController::class, 'removeFriend'])->name('users.removeFriend');
+
+// Список пользователей и страница их профиля
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+// Лента друзей
+Route::get('/feed', [UserController::class, 'feed'])->name('users.feed');
