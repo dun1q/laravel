@@ -47,19 +47,22 @@
         </table>
         <a href="{{ route('cars.index') }}" class="btn btn-secondary">← Назад</a>
     </div>
+
+
     <div class="mt-4">
+        @if(!$car->trashed())
+            @can('update-car', $car)
+                <a href="{{ route('cars.edit', $car) }}" class="btn btn-primary">✏️</a>
+            @endcan
 
-        @can('update-car', $car)
-            <a href="{{ route('cars.edit', $car) }}" class="btn btn-primary">✏️</a>
-        @endcan
-
-        @can('delete-car', $car)
-            <form action="{{ route('cars.destroy', $car) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">🗑️</button>
-            </form>
-        @endcan
+            @can('delete-car', $car)
+                <form action="{{ route('cars.destroy', $car) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">🗑️</button>
+                </form>
+            @endcan
+        @endif
 
         @if(auth()->user()?->is_admin && $car->trashed())
             <form action="{{ route('cars.restore', $car) }}" method="POST" class="d-inline">
