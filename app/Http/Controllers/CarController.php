@@ -81,10 +81,12 @@ class CarController extends Controller
         return redirect()->route('cars.index')->with('success', 'Автообъявление добавлено');
     }
 
-    public function show(Car $car)
+    public function show($id)
     {
+        $car = Car::withTrashed()->findOrFail($id);
         return view('cars.show', compact('car'));
     }
+
 
     public function edit(Car $car)
     {
