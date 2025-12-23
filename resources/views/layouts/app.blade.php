@@ -8,7 +8,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- 🚩 ШАПКА -->
+<!-- ШАПКА -->
 <header class="bg-white border-bottom py-3">
 
     <!-- Иконки на карточках -->
@@ -48,10 +48,10 @@
     @yield('content')
 </div>
 
-<!-- 🚩 ФУТЕР -->
+<!-- ФУТЕР -->
 <footer class="bg-white border-top footer-fixed" style="height: 60px; display: flex; align-items: center; padding: 0 15px;">
     <div class="container d-flex justify-content-between align-items-center">
-        <small class="text-muted">Ануфриев Данил</small>
+        <small class="text-muted">Ануфриев Данил и Демидов Иван</small>
         <div class="d-flex gap-2">
             <a href="https://t.me/dan_1ka" target="_blank" class="btn btn-outline-secondary btn-sm rounded-circle">
                 Tg
