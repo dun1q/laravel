@@ -52,7 +52,6 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        // Исправлено! Явно указываем users.id
         $friends = $user->friends()->pluck('users.id');
 
         // Получаем все машины друзей, свежие сверху
