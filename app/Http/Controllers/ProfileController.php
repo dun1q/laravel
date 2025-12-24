@@ -57,4 +57,17 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function show(Request $request)
+    {
+        $user = $request->user();
+
+        // Создать новый токен (можно сделать проверку — если уже есть, не создавать)
+        $token = $user->createToken('WebProfile')->accessToken;
+
+        return view('profile', [
+            'user' => $user,
+            'token' => $token,
+        ]);
+    }
 }

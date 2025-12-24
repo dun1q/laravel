@@ -60,3 +60,6 @@ Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')
 
 // Лента друзей
 Route::get('/feed', [UserController::class, 'feed'])->name('users.feed');
+
+// Профиль пользователя
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile')->middleware('auth');

@@ -6,6 +6,7 @@ use App\Models\Car;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,12 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // ✅ Любой залогиненный может создавать
+        // Любой залогиненный может создавать
         Gate::define('create-car', function (User $user) {
             return true; // auth() гарантирует залогиненность
         });
 
-        // ✅ Только владелец может редактировать/удалять (мягко)
+        // Только владелец может редактировать/удалять (мягко)
         Gate::define('update-car', function (User $user, Car $car) {
             return $user->id === $car->user_id || $user->is_admin;
         });
@@ -39,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id === $car->user_id || $user->is_admin;
         });
 
-        // ✅ Только админ — восстанавливать / удалять навсегда
+        // Только админ — восстанавливать / удалять навсегда
         Gate::define('restore-car', function (User $user) {
             return $user->is_admin;
         });
@@ -47,5 +48,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('force-delete-car', function (User $user) {
             return $user->is_admin;
         });
+
+        $this->registerPolicies();
+        //Passport::routes();
     }
 }

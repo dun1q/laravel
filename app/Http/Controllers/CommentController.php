@@ -24,7 +24,7 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        // здесь можно добавить проверку прав (только автор или админ)
+        // добавить проверку прав (только автор или админ)
         $comment->delete();
         return back();
     }

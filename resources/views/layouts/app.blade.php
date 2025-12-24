@@ -33,6 +33,7 @@
             <a href="{{ route('cars.create') }}" class="btn btn-danger px-4">Загрузить</a>
             <a href="{{ route('users.index') }}" class="btn btn-outline-primary btn-sm">Пользователи</a>
             <a href="{{ route('users.feed') }}" class="btn btn-outline-primary btn-sm">Лента друзей</a>
+            <a href="{{ route('profile') }}" class="btn btn-outline-primary btn-sm">Профиль</a>
             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                 @csrf
                 <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
